@@ -20,7 +20,7 @@ class ProductService
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function store(array $payload, UploadedFile $file): array
+    public function store(array $payload, UploadedFile $file = null): array
     {
         $category = $this->categoryRepository->find($payload['category_id']);
 
@@ -32,9 +32,10 @@ class ProductService
             $payload[$key] = is_string($value) ? Str::upper($value) : $value;
         }
 
-        $nameFile = $this->saveFile($file);
-
-        $payload['image'] = Storage::url($nameFile);
+        if (!is_null($file)) {
+            $nameFile = $this->saveFile($file);
+            $payload['image'] = Storage::url($nameFile);
+        }
 
         return $this->productRepository->updateOrCreate($payload)->toArray();
     }
@@ -50,7 +51,7 @@ class ProductService
         return $this->productRepository->delete($product);
     }
 
-    public function update(array $payload , int $id): array
+    public function update(array $payload , int $id, UploadedFile $file = null): array
     {
         $category = $this->categoryRepository->find($payload['category_id']);
 
@@ -66,6 +67,11 @@ class ProductService
 
         foreach ($payload as $key => $value) {
             $payload[$key] = is_string($value) ? Str::upper($value) : $value;
+        }
+
+        if (!is_null($file)) {
+            $nameFile = $this->saveFile($file);
+            $payload['image'] = Storage::url($nameFile);
         }
 
         $payload['id'] = $id;

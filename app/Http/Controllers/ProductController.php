@@ -40,7 +40,7 @@ class ProductController extends Controller
     public function update(int $id, Request $request)
     {
         try {
-            $response = $this->productService->update($request->all(), $id);
+            $response = $this->productService->update($request->all(), $id, $request->image);
         } catch (\Exception $exception) {
             return $this->returnResponse([], $exception->getMessage(), $exception->getCode());
         }
