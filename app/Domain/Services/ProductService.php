@@ -66,7 +66,9 @@ class ProductService
         }
 
         foreach ($payload as $key => $value) {
-            $payload[$key] = is_string($value) ? Str::upper($value) : $value;
+            if ($key !== 'image') {
+                $payload[$key] = is_string($value) ? Str::upper($value) : $value;
+            }
         }
 
         if (!is_null($file)) {

@@ -19,6 +19,6 @@ class Controller extends BaseController
             'success' =>  ($code == 200),
             'message' => $message,
             'response' => $response ?? []
-        ], $code);
+        ], $code > 0 ? $code : 500);
     }
 }

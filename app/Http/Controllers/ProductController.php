@@ -40,7 +40,8 @@ class ProductController extends Controller
     public function update(int $id, Request $request)
     {
         try {
-            $response = $this->productService->update($request->all(), $id, $request->image);
+            $image = is_file($request->image) ? $request->image : null;
+            $response = $this->productService->update($request->all(), $id, $image);
         } catch (\Exception $exception) {
             return $this->returnResponse([], $exception->getMessage(), $exception->getCode());
         }
